@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+    <h2>Posts</h2>
+    <p class="small">Use <a href="{{ url_for('route_add') }}">Add Demo Post</a> to create a post. Нажмите на **заголовок поста**, чтобы просмотреть детали и получить возможность **редактирования**.</p>
+
+    <ul class="post-list">
+        {% for p in posts %}
+        <li>
+            <a href="{{ url_for('post_detail', post_id=p.id) }}" class="post-link">
+                <div class="post-header">
+                    <span class="post-id">#{{ p.id }}</span>
+                    <h3>{{ p.title }}</h3>
+                </div>
+            </a>
+
+            <div class="small text-muted">
+                Опубликовано: {{ p.date_posted.strftime('%Y-%m-%d в %H:%M') }}
+            </div>
+
+            <p class="post-content">{{ p.content | truncate(150) }}</p>
+
+            <div class="post-actions">
+                <a href="{{ url_for('route_delete', post_id=p.id) }}">Удалить</a>
+            </div>
+        </li>
+        {% else %}
+        <li>Постов не найдено.</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

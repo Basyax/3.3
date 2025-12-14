@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+    <article class="media content-section">
+        <div class="media-body">
+            <div class="article-metadata">
+                <h2 class="article-title">{{ post.title }}</h2>
+
+                <small class="text-muted">
+                    Автор: {{ post.author.name }} {{ post.author.surname }} | Группа: {{ post.author.group }} |
+                    Опубликовано: {{ post.date_posted.strftime('%Y-%m-%d в %H:%M') }}
+                </small>
+
+                {% if is_author %}
+                <div class="post-actions-detail">
+                    <a class="action-link edit-link"
+                       href="{{ url_for('edit_post', post_id=post.id) }}">
+                        [Редактировать]
+                    </a>
+
+                    <form method="POST" action="{{ url_for('route_delete', post_id=post.id) }}" style="display: inline;">
+                        <input type="hidden" name="csrf_token" value="{{ comment_form.csrf_token._value() if comment_form.csrf_token else '' }}">
+                        <button type="submit" class="action-link delete-link" style="background: none; border: none; cursor: pointer; color: inherit; padding: 0; font-size: inherit;">
+                            [Удалить]
+                        </button>
+                    </form>
+                </div>
+                {% endif %}
+            </div>
+
+            <p class="article-content">{{ post.content }}</p>
+        </div>
+    </article>
+
+    <div class="comments-section mt-5">
+        <h3>Комментарии ({{ post.comments|length }})</h3>
+
+        <div class="comment-form-box mb-4">
+            <h4>Оставить комментарий (от {{ current_user.name }} {{ current_user.surname }})</h4>
+            <form method="POST" action="">
+                {{ comment_form.hidden_tag() }}
+
+                <div class="form-group">
+                    {{ comment_form.content.label(class="form-control-label") }}
+                    {{ comment_form.content(class="form-control", rows="3") }}
+                    {% for error in comment_form.content.errors %}
+                        <span class="text-danger">{{ error }}</span>
+                    {% endfor %}
+                </div>
+
+                <div class="form-group">
+                    {{ comment_form.submit(class="action-link primary-link") }}
+                </div>
+            </form>
+        </div>
+
+        <ul class="list-group">
+            {% for comment in post.comments %}
+                <li class="list-group-item mb-2 p-3 border rounded">
+                    <div class="comment-header d-flex justify-content-between">
+                        <strong>{{ comment.comment_author.name }} {{ comment.comment_author.surname }}</strong>
+                        <small class="text-muted">{{ comment.date_posted.strftime('%Y-%m-%d в %H:%M') }}</small>
+                    </div>
+                    <p class="comment-content mt-2">{{ comment.content }}</p>
+                </li>
+            {% else %}
+                <p>Пока нет комментариев. Будьте первым!</p>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div class="transactions-section mt-5">
+        <h3>Транзакции поста #{{ post.id }}</h3>
+        {% if post.transactions %}
+            <ul class="transaction-list">
+                {% for tx in post.transactions %}
+                    <li>
+                        <strong>{{ tx.action }}</strong>: {{ tx.description }}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>Нет транзакций для этого поста.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock content %}

@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+    <h2>Transaction Log</h2>
+    <p class="small">Shows both trigger-generated and manual transaction logs (newest first).</p>
+    <ul class="post-list">
+        {% for t in transactions %}
+        <li>
+            <div><strong>{{ t.action }}</strong> (id: {{ t.id }})</div>
+            <div class="tx-desc">{{ t.description }}</div>
+            <div class="tx-meta">post_id: {{ t.post_id }}</div>
+        </li>
+        {% else %}
+        <li>No transactions yet.</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

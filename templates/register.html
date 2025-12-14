@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container small-form-container">
+    <h2 class="form-title">Регистрация</h2>
+    <form method="POST" action="">
+        {{ form.hidden_tag() }}
+        
+        <div class="form-group">
+            {{ form.username.label(class="form-control-label") }}
+            {{ form.username(class="form-control", placeholder="Введите имя пользователя") }}
+            {% for error in form.username.errors %}
+                <span class="text-danger">{{ error }}</span>
+            {% endfor %}
+        </div>
+        
+        <div class="form-group">
+            {{ form.email.label(class="form-control-label") }}
+            {{ form.email(class="form-control", placeholder="Введите email") }}
+            {% for error in form.email.errors %}
+                <span class="text-danger">{{ error }}</span>
+            {% endfor %}
+        </div>
+        
+        <div class="form-group">
+            {{ form.name.label(class="form-control-label") }}
+            {{ form.name(class="form-control", placeholder="Введите Ваше имя") }}
+            {% for error in form.name.errors %}
+                <span class="text-danger">{{ error }}</span>
+            {% endfor %}
+        </div>
+        
+        <div class="form-group">
+            {{ form.surname.label(class="form-control-label") }}
+            {{ form.surname(class="form-control", placeholder="Введите Вашу фамилию") }}
+            {% for error in form.surname.errors %}
+                <span class="text-danger">{{ error }}</span>
+            {% endfor %}
+        </div>
+        
+        <div class="form-group">
+            {{ form.group.label(class="form-control-label") }}
+            {{ form.group(class="form-control", placeholder="Введите Вашу группу") }}
+            {% for error in form.group.errors %}
+                <span class="text-danger">{{ error }}</span>
+            {% endfor %}
+        </div>
+
+        <div class="form-group">
+            {{ form.password.label(class="form-control-label") }}
+            {{ form.password(class="form-control", placeholder="Введите пароль") }}
+            {% for error in form.password.errors %}
+                <span class="text-danger">{{ error }}</span>
+            {% endfor %}
+        </div>
+
+        <div class="form-group">
+            {{ form.confirm_password.label(class="form-control-label") }}
+            {{ form.confirm_password(class="form-control", placeholder="Повторите пароль") }}
+            {% for error in form.confirm_password.errors %}
+                <span class="text-danger">{{ error }}</span>
+            {% endfor %}
+        </div>
+
+        <div class="form-group mt-3">
+            {{ form.submit(class="action-link primary-link") }}
+        </div>
+    </form>
+    <div class="border-top pt-3 text-center">
+        <small class="text-muted">
+            Уже есть аккаунт? <a class="ml-2" href="{{ url_for('login') }}">Войти</a>
+        </small>
+    </div>
+</div>
+{% endblock content %}
